@@ -8,7 +8,7 @@ module.exports = hasBinary;
 /**
  * Checks for binary data.
  *
- * Right now only buffers are supported. Working on it...
+ * Right now only Buffer and ArrayBuffer are supported..
  *
  * @param {Object} anything
  * @api public
@@ -17,7 +17,10 @@ module.exports = hasBinary;
 function hasBinary(data) {
 
   function recursiveCheckForBinary(obj) { 
-    if (Buffer.isBuffer(obj)) {
+    if (!obj) return false;
+
+    if ( (global.Buffer && Buffer.isBuffer(obj)) ||
+         (global.ArrayBuffer && obj instanceof ArrayBuffer)) {
       return true;
     }
 

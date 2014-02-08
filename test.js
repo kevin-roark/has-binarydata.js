@@ -12,6 +12,10 @@ describe('has-binarydata', function(){
   it('should work with an array that contains a buffer', function() {
     var arr = [1, new Buffer('asdfasdf', 'utf8'), 2];
     assert(hasBinary(arr));
+  });
+
+  it('should work with an ArrayBuffer', function() {
+    assert(hasBinary(new ArrayBuffer()));
   })
 
 });
