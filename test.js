@@ -14,8 +14,16 @@ describe('has-binarydata', function(){
     assert(hasBinary(arr));
   });
 
-  it('should work with an ArrayBuffer', function() {
-    assert(hasBinary(new ArrayBuffer()));
-  })
+  if (global.ArrayBuffer) {
+      it('should work with an ArrayBuffer', function() {
+        assert(hasBinary(new ArrayBuffer()));
+      });
+  }
+
+  if (global.Blob) {
+     it('should work with a Blob', function() {
+        assert(hasBinary(new Blob()));
+     });
+  }
 
 });

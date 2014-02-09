@@ -20,7 +20,9 @@ function hasBinary(data) {
     if (!obj) return false;
 
     if ( (global.Buffer && Buffer.isBuffer(obj)) ||
-         (global.ArrayBuffer && obj instanceof ArrayBuffer)) {
+         (global.ArrayBuffer && obj instanceof ArrayBuffer) ||
+         (global.Blob && obj instanceof Blob)
+        ) {
       return true;
     }
 

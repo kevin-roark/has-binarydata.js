@@ -1,6 +1,6 @@
 {
   "name": "has-binarydata",
-  "version": "0.0.2",
+  "version": "0.0.22",
   "description": "",
   "dependencies": {
     "isarray": "0.0.1"
