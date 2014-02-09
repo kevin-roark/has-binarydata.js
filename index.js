@@ -32,7 +32,7 @@ function hasBinary(data) {
       }
     } else if (obj && 'object' == typeof obj) {
       for (var key in obj) {
-        if (checkForBinary(obj[key])) {
+        if (recursiveCheckForBinary(obj[key])) {
           return true;
         }
       }
