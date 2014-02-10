@@ -21,7 +21,8 @@ function hasBinary(data) {
 
     if ( (global.Buffer && Buffer.isBuffer(obj)) ||
          (global.ArrayBuffer && obj instanceof ArrayBuffer) ||
-         (global.Blob && obj instanceof Blob)
+         (global.Blob && obj instanceof Blob) ||
+         (global.File && obj instanceof File)
         ) {
       return true;
     }
