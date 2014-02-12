@@ -1,3 +1,8 @@
+/*
+ * Module requirements.
+ */
+
+var isArray = require('isarray');
 
 /**
  * Module exports.
@@ -27,7 +32,7 @@ function hasBinary(data) {
       return true;
     }
 
-    if (Array.isArray(obj)) {
+    if (isArray(obj)) {
       for (var i = 0; i < obj.length; i++) {
           if (recursiveCheckForBinary(obj[i])) {
               return true;
