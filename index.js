@@ -39,6 +39,10 @@ function hasBinary(data) {
           }
       }
     } else if (obj && 'object' == typeof obj) {
+      if (obj.toJSON) {
+        obj = obj.toJSON();
+      }
+
       for (var key in obj) {
         if (recursiveCheckForBinary(obj[key])) {
           return true;
