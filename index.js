@@ -11,9 +11,7 @@ var isArray = require('isarray');
 module.exports = hasBinary;
 
 /**
- * Checks for binary data.
- *
- * Right now only Buffer and ArrayBuffer are supported..
+ * Checks for binary data (ArrayBuffer, Buffer, Blob, and File).
  *
  * @param {Object} anything
  * @api public
@@ -21,7 +19,7 @@ module.exports = hasBinary;
 
 function hasBinary(data) {
 
-  function recursiveCheckForBinary(obj) { 
+  function _hasBinary(obj) {
     if (!obj) return false;
 
     if ( (global.Buffer && Buffer.isBuffer(obj)) ||
@@ -33,25 +31,42 @@ function hasBinary(data) {
     }
 
     if (isArray(obj)) {
-      for (var i = 0; i < obj.length; i++) {
-          if (recursiveCheckForBinary(obj[i])) {
-              return true;
-          }
+      return function() {
+        for (var i = 0; i < obj.length; i++) {
+          var result = _hasBinary(obj[i]);
+          while(isfun(result)) result = result();
+          if (result) return true;
+        }
+
+        return false;
       }
     } else if (obj && 'object' == typeof obj) {
-      if (obj.toJSON) {
-        obj = obj.toJSON();
-      }
-
-      for (var key in obj) {
-        if (recursiveCheckForBinary(obj[key])) {
-          return true;
+      return function() {
+        if (obj.toJSON) {
+          obj = obj.toJSON();
         }
+
+        for (var key in obj) {
+          var result = _hasBinary(obj[key]);
+          while (isfun(result)) result = result();
+          if (result) return true;
+        }
+
+        return false;
       }
     }
 
     return false;
   }
 
-  return recursiveCheckForBinary(data);
+  // trampoline
+  var result = _hasBinary(data);
+  while (isfun(result)) {
+    result = result();
+  }
+  return result;
+}
+
+function isfun(x) {
+  return typeof x === 'function';
 }
