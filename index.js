@@ -11,7 +11,9 @@ var isArray = require('isarray');
 module.exports = hasBinary;
 
 /**
- * Checks for binary data (ArrayBuffer, Buffer, Blob, and File).
+ * Checks for binary data.
+ *
+ * Right now only Buffer and ArrayBuffer are supported..
  *
  * @param {Object} anything
  * @api public
@@ -31,42 +33,25 @@ function hasBinary(data) {
     }
 
     if (isArray(obj)) {
-      return function() {
-        for (var i = 0; i < obj.length; i++) {
-          var result = _hasBinary(obj[i]);
-          while(isfun(result)) result = result();
-          if (result) return true;
-        }
-
-        return false;
+      for (var i = 0; i < obj.length; i++) {
+          if (_hasBinary(obj[i])) {
+              return true;
+          }
       }
     } else if (obj && 'object' == typeof obj) {
-      return function() {
-        if (obj.toJSON) {
-          obj = obj.toJSON();
-        }
+      if (obj.toJSON) {
+        obj = obj.toJSON();
+      }
 
-        for (var key in obj) {
-          var result = _hasBinary(obj[key]);
-          while (isfun(result)) result = result();
-          if (result) return true;
+      for (var key in obj) {
+        if (_hasBinary(obj[key])) {
+          return true;
         }
-
-        return false;
       }
     }
 
     return false;
   }
 
-  // trampoline
-  var result = _hasBinary(data);
-  while (isfun(result)) {
-    result = result();
-  }
-  return result;
-}
-
-function isfun(x) {
-  return typeof x === 'function';
+  return _hasBinary(data);
 }

@@ -60,6 +60,33 @@ describe('has-binarydata', function(){
     assert(hasBinary(ob));
   });
 
+  it('should handle a very large json object with no binary', function(done) {
+    this.timeout();
+    fs.readFile(__dirname + '/fixtures/big.json', function(err, data) {
+      if (err) {
+        console.log(err);
+        assert(false);
+      }
+      data = JSON.parse(data);
+      assert(!hasBinary(data));
+      done();
+    });
+  });
+
+  it('should handle a very large json object with binary', function(done) {
+    this.timeout();
+    fs.readFile(__dirname + '/fixtures/big.json', function(err, data) {
+      if (err) {
+        console.log(err);
+        assert(false);
+      }
+      var ob = JSON.parse(data);
+      ob.bin = {bin: {bin: {bin: new Buffer('abc')}}};
+      assert(hasBinary(ob));
+      done();
+    });
+  });
+
   if (global.ArrayBuffer) {
       it('should work with an ArrayBuffer', function() {
         assert(hasBinary(new ArrayBuffer()));
