@@ -44,7 +44,7 @@ function hasBinary(data) {
       }
 
       for (var key in obj) {
-        if (_hasBinary(obj[key])) {
+        if (obj.hasOwnProperty(key) && _hasBinary(obj[key])) {
           return true;
         }
       }
