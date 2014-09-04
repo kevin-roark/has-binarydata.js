@@ -1,6 +1,6 @@
 {
   "name": "has-binary-data",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A function that takes anything in javascript and returns true if its argument contains binary data.",
   "dependencies": {
     "isarray": "0.0.1"
